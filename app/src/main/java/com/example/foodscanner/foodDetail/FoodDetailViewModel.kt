@@ -1,4 +1,6 @@
 package com.example.foodscanner.foodDetail
 
-class FoodDetailViewModel {
+import androidx.lifecycle.ViewModel
+
+class FoodDetailViewModel : ViewModel(){
 }

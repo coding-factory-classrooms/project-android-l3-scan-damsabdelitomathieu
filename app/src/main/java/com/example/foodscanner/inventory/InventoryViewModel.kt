@@ -1,4 +1,6 @@
 package com.example.foodscanner.inventory
 
-class InventoryModelView {
+import androidx.lifecycle.ViewModel
+
+class InventoryViewModel : ViewModel(){
 }
