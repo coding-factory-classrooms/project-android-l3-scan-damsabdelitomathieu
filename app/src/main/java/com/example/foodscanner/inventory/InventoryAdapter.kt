@@ -18,9 +18,12 @@ class InventoryAdapter(private var foods: List<Food>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val food = foods[position]
-        with(holder) {
-
+        with(holder.binding) {
+            foodDescriptionTextView.text = food.description
+            foodScanDateTextView.text = food.latestScanDate
+            foodImageView.setImageResource(food.imageId)
         }
+
     }
 
     override fun getItemCount(): Int = foods.size
