@@ -8,13 +8,29 @@ import com.example.foodscanner.repository.Repository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-sealed class ScannerViewModelState(open val errorMessage: String = "", open val addButtonVisibility: Int = View.VISIBLE) {
+sealed class ScannerViewModelState(
+    open val errorMessage: String = "",
+    open val addButtonVisibility: Int = View.VISIBLE,
+    open val imageViewVisibility: Int = View.INVISIBLE,
+    open val imageViewUrl: String = "",
+    open val foodNameVisibility: Int = View.INVISIBLE,
+    open val foodName: String = "",
+) {
 
     object Success : ScannerViewModelState()
-    data class UpdateScan(override val addButtonVisibility: Int) :
-        ScannerViewModelState("", addButtonVisibility)
 
-    data class Failure(override val errorMessage: String) : ScannerViewModelState(errorMessage, View.INVISIBLE)
+    data class SuccessWithInfo(
+        override val imageViewVisibility: Int,
+        override val imageViewUrl: String,
+        override val foodName: String,
+    ) :
+        ScannerViewModelState("", View.VISIBLE, imageViewVisibility, imageViewUrl, View.VISIBLE, foodName)
+
+    data class UpdateScan(override val addButtonVisibility: Int) :
+        ScannerViewModelState("", addButtonVisibility, View.INVISIBLE, "")
+
+    data class Failure(override val errorMessage: String) :
+        ScannerViewModelState(errorMessage, View.INVISIBLE, View.INVISIBLE, "")
 }
 
 class ScannerViewModel(private val repository: Repository) : ViewModel() {
@@ -25,10 +41,25 @@ class ScannerViewModel(private val repository: Repository) : ViewModel() {
     val myResponse: MutableLiveData<Response<FoodRequest>> = MutableLiveData()
 
     fun scan(code: String) {
-        if (getFood(code)) {
-            state.value = ScannerViewModelState.Success
-        } else {
-            state.value = ScannerViewModelState.Failure("Aucun produit trouvé pour ce code barre !")
+        viewModelScope.launch {
+            if (getFood(code)) {
+                Log.i("Response", "code trouvé")
+
+                var viewVisibility = View.VISIBLE
+
+                if (myResponse.value!!.body()!!.getImageUrl().isBlank())
+                    viewVisibility = View.INVISIBLE
+
+                state.value = ScannerViewModelState.SuccessWithInfo(
+                    viewVisibility,
+                    myResponse.value!!.body()!!.getImageUrl(),
+                    myResponse.value!!.body()!!.getFoodName(),
+                )
+            } else {
+                Log.i("Response", "code non trouvé")
+                state.value =
+                    ScannerViewModelState.Failure("Aucun produit trouvé pour ce code barre !")
+            }
         }
     }
 
@@ -36,19 +67,15 @@ class ScannerViewModel(private val repository: Repository) : ViewModel() {
 
     }
 
-    private fun getFood(barCode: String): Boolean {
-        viewModelScope.launch {
-            val response: Response<FoodRequest> = repository.getFood(barCode)
-            myResponse.value = response
-        }
+    private suspend fun getFood(barCode: String): Boolean {
 
-        if (myResponse.value != null)
-            return myResponse.value!!.isSuccessful
+        val response: Response<FoodRequest> = repository.getFood(barCode)
+        myResponse.value = response
+
+        if (myResponse.value != null && myResponse.value!!.body() != null) {
+            return myResponse.value!!.body()!!.isFound()
+        }
 
         return false
     }
-}
-
-fun searchFood(code: String): Boolean {
-    return code == "3123349014822"
 }
