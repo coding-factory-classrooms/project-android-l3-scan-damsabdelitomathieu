@@ -11,13 +11,19 @@ data class Food(
     val imageId: Int
 )
 
+
 @Entity(tableName = "food_table")
 data class ScannedFood (
     @PrimaryKey val id: Int,
-    @ColumnInfo(name = "title") val title: String?,
-    /*
-    @ColumnInfo(name = "latest_scan_date") val latestScanDate: String?,
-    @ColumnInfo(name = "description") val description: String?,
-    @ColumnInfo(name = "image_id") val imageId: String?
-    */
+    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "latestScanDate") val latestScanDate: String,
+    @ColumnInfo(name = "description") val description: String,
+    @ColumnInfo(name = "image") val image: Int
+
+
+
+
+    //@ColumnInfo(name = "first_name") val firstName: String?,
+    //@ColumnInfo(name = "last_name") val lastName: String?
+
 )

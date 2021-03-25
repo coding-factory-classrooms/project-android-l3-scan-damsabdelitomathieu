@@ -2,12 +2,15 @@ package com.example.foodscanner.inventory
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.example.foodscanner.Food
 import com.example.foodscanner.R
+import com.example.foodscanner.ScannedFood
 import com.example.foodscanner.ScannerViewModel
-import com.example.foodscanner.dataBase.FoodDao
+import com.example.foodscanner.dataBase.AppDatabase
 import com.example.foodscanner.databinding.ActivityInventoryBinding
 import com.example.foodscanner.databinding.ActivityScannerBinding
 
@@ -65,8 +68,5 @@ class InventoryActivity : AppCompatActivity() {
         adapter = InventoryAdapter(foods)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-
-
-        val getDataFromDatabase = FoodDao
     }
 }

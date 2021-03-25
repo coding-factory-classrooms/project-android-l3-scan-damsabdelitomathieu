@@ -7,21 +7,14 @@ import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-interface FoodDao {
-    /*@Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAll(vararg foods: ScannedFood)
-
-    @Delete
-    fun delete(food: ScannedFood)
-
-    @Query("SELECT * FROM food")
-    fun getAll(): Flow<List<ScannedFood>>*/
-
+interface ScannedFoodDao {
     @Query("SELECT * FROM food_table")
-    fun getAll(): Flow<List<ScannedFood>>
+    fun getAll(): List<ScannedFood> //flow
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(food: Food)
+    //@Insert(onConflict = OnConflictStrategy.IGNORE)
+    //suspend fun insert(food: Food)
+    @Insert
+    fun insertAll(vararg ScannedFoods: ScannedFood)
 
     @Query("DELETE FROM food_table")
     suspend fun deleteAll()
