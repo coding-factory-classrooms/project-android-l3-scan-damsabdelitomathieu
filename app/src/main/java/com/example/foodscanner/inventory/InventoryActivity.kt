@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodscanner.Food
 import com.example.foodscanner.R
 import com.example.foodscanner.ScannerViewModel
+import com.example.foodscanner.dataBase.FoodDao
 import com.example.foodscanner.databinding.ActivityInventoryBinding
 import com.example.foodscanner.databinding.ActivityScannerBinding
 
@@ -54,6 +55,7 @@ class InventoryActivity : AppCompatActivity() {
             R.drawable.riz_lustucru)
     )
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInventoryBinding.inflate(layoutInflater)
@@ -64,5 +66,7 @@ class InventoryActivity : AppCompatActivity() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
+
+        val getDataFromDatabase = FoodDao
     }
 }
