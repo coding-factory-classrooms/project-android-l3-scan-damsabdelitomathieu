@@ -4,7 +4,10 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
 import com.example.foodscanner.api.model.FoodRequest
+import com.example.foodscanner.data.Food
+import com.example.foodscanner.data.FoodDao
 import com.example.foodscanner.repository.Repository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -24,7 +27,14 @@ sealed class ScannerViewModelState(
         override val imageViewUrl: String,
         override val foodName: String,
     ) :
-        ScannerViewModelState("", View.VISIBLE, imageViewVisibility, imageViewUrl, View.VISIBLE, foodName)
+        ScannerViewModelState(
+            "",
+            View.VISIBLE,
+            imageViewVisibility,
+            imageViewUrl,
+            View.VISIBLE,
+            foodName
+        )
 
     data class UpdateScan(override val addButtonVisibility: Int) :
         ScannerViewModelState("", addButtonVisibility, View.INVISIBLE, "")
@@ -35,10 +45,34 @@ sealed class ScannerViewModelState(
 
 class ScannerViewModel(private val repository: Repository) : ViewModel() {
 
+    lateinit var foodDao: FoodDao
+
     private val state = MutableLiveData<ScannerViewModelState>()
     fun getState(): LiveData<ScannerViewModelState> = state
 
     val myResponse: MutableLiveData<Response<FoodRequest>> = MutableLiveData()
+
+    fun addFood() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val food: Food = Food(
+                0,
+                myResponse.value!!.body()!!.getFoodName(),
+                "25.03.2021",
+                myResponse.value!!.body()!!.getFoodName() + " -> description",
+                myResponse.value!!.body()!!.getImageUrl()
+            )
+            Log.i("DATABASE", "addFood() in ScannerViewModel -> food = $food")
+            foodDao.addFood(food)
+
+            val listFood = foodDao.readAllData()
+
+            val iterator = listFood.iterator()
+
+            if (iterator.hasNext()) {
+                Log.i("DATABASE", "titre : " + iterator.next().title)
+            }
+        }
+    }
 
     fun scan(code: String) {
         viewModelScope.launch {
@@ -61,10 +95,6 @@ class ScannerViewModel(private val repository: Repository) : ViewModel() {
                     ScannerViewModelState.Failure("Aucun produit trouvé pour ce code barre !")
             }
         }
-    }
-
-    fun addToDB(code: String) {
-
     }
 
     private suspend fun getFood(barCode: String): Boolean {

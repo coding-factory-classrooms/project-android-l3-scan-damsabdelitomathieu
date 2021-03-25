@@ -1,8 +1,6 @@
 package com.example.foodscanner
 
-import android.R
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,13 +14,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.budiyev.android.codescanner.*
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
+import com.example.foodscanner.data.FoodDataBase
 import com.example.foodscanner.databinding.ActivityScannerBinding
 import com.example.foodscanner.repository.Repository
-import com.squareup.picasso.Picasso
-
 
 const val TAG = "ScannerActivity"
 const val CAMERA_REQUEST_CODE = 101
@@ -30,8 +24,6 @@ const val CAMERA_REQUEST_CODE = 101
 class ScannerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityScannerBinding
-
-    //private val model: ScannerViewModel by viewModels()
     private lateinit var model: ScannerViewModel
     private lateinit var codeScanner: CodeScanner
     private lateinit var barCode: String
@@ -44,6 +36,7 @@ class ScannerActivity : AppCompatActivity() {
         val repository = Repository()
         val viewModelFactory = ScannerViewModelFactory(repository)
         model = ViewModelProvider(this, viewModelFactory).get(ScannerViewModel::class.java)
+        model.foodDao = FoodDataBase.getDataBase(this).foodDao()
 
         model.myResponse.observe(this, Observer { response ->
             if (response.isSuccessful) {
@@ -88,8 +81,14 @@ class ScannerActivity : AppCompatActivity() {
         }
         // Action on our addButton
         binding.addButton.setOnClickListener {
-            model.addToDB(this.barCode)
+            insertIntoDatabase()
         }
+    }
+
+    private fun insertIntoDatabase() {
+        model.addFood()
+        Toast.makeText(this, "Produit ajouté !",Toast.LENGTH_SHORT).show()
+        navigateToInventory()
     }
 
     private fun simulateBarCode() {
@@ -103,12 +102,10 @@ class ScannerActivity : AppCompatActivity() {
         return when (state) {
             ScannerViewModelState.Success -> {
                 startSuccessAnimation(state)
-                navigateToInventory()
             }
             is ScannerViewModelState.SuccessWithInfo -> {
                 startFoodDetailAnimation(state)
                 startSuccessAnimation(state)
-                navigateToInventory()
             }
             is ScannerViewModelState.Failure -> {
                 startFailureAnimation(state)
@@ -139,9 +136,7 @@ class ScannerActivity : AppCompatActivity() {
         animation.addAnimation(fadeIn)
         animation.addAnimation(fadeOut)
         animation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-                //binding.errorMessageTextView.isVisible = true
-            }
+            override fun onAnimationStart(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
                 binding.errorMessageTextView.visibility = View.INVISIBLE
@@ -168,9 +163,6 @@ class ScannerActivity : AppCompatActivity() {
         binding.imageView.animate()
             .alpha(0f)
             .setDuration(500)
-            .withEndAction {
-                //binding.imageView.isVisible = false
-            }
 
         reinitalizeTextView()
     }
@@ -179,7 +171,6 @@ class ScannerActivity : AppCompatActivity() {
 
         Log.i("ANIMATION", "animation success !")
 
-        //binding.errorMessageTextView.isVisible = false
         binding.addButton.visibility = state.addButtonVisibility
         binding.addButton.alpha = 0f
 
@@ -203,10 +194,9 @@ class ScannerActivity : AppCompatActivity() {
         val url: String = state.imageViewUrl.replace("https", "http")
 
         if (url.isNotBlank()) {
-            //Glide.with(this).load(url).into(binding.imageView);
             //Picasso.get().load(url).into(binding.imageView)
-
-            Glide.with(this).load("http://static.openfoodfacts.org/images/products/302/176/040/0012/front_fr.70.400.jpg")
+            Glide.with(this)
+                .load("http://static.openfoodfacts.org/images/products/302/176/040/0012/front_fr.70.400.jpg")
                 .into(binding.imageView)
         }
         Log.i("ANIMATION", "imageURL : $url")
@@ -244,16 +234,6 @@ class ScannerActivity : AppCompatActivity() {
                     codeScanner.releaseResources()
                     barCode = it.text
                     model.scan(barCode)
-
-                    Log.i(TAG, "-----------------------------------------------------------------")
-                    Log.i(TAG, "--------> ${it.text}")
-                    Log.i(TAG, "--------> ${it.timestamp}")
-                    Log.i(TAG, "--------> ${it.barcodeFormat}")
-                    Log.i(TAG, "--------> ${it.numBits}")
-                    Log.i(TAG, "--------> ${it.rawBytes}")
-                    Log.i(TAG, "--------> ${it.resultMetadata}")
-                    Log.i(TAG, "--------> ${it.resultPoints}")
-                    Log.i(TAG, "-----------------------------------------------------------------")
                 }
             }
 
