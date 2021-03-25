@@ -73,5 +73,19 @@ class InventoryActivity : AppCompatActivity() {
         adapter = InventoryAdapter(foods)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "ScannedFoodDao"
+        ).build()
+
+        val foodDao = db.scannedFoodDao()
+        foodDao.insertAll(ScannedFood(1, "riz", "12/03/2021", "test", 1))
+        val scannedFood: List<ScannedFood> = foodDao.getAll()
+
+        for (scannedFood in scannedFood) {
+            Log.i("InventoryActivity", "id = ${scannedFood.id}, title = ${scannedFood.title}, date = ${scannedFood.latestScanDate}," +
+                    "desc = ${scannedFood.description}, img = ${scannedFood.image}")
+        }
     }
 }
