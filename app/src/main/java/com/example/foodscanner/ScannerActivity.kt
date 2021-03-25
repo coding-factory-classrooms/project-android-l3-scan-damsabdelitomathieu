@@ -77,10 +77,10 @@ class ScannerActivity : AppCompatActivity() {
         binding.addButton.visibility = View.INVISIBLE
         binding.errorMessageTextView.visibility = View.INVISIBLE
         binding.imageView.visibility = View.INVISIBLE
-        binding.foodNametextView.visibility = View.INVISIBLE
+        binding.foodNameTextView.visibility = View.INVISIBLE
 
         binding.imageView.isVisible = false
-        binding.foodNametextView.isVisible = false
+        binding.foodNameTextView.isVisible = false
 
         // Action on our simulateButton
         binding.simulateButton.setOnClickListener {
@@ -140,7 +140,7 @@ class ScannerActivity : AppCompatActivity() {
         animation.addAnimation(fadeOut)
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
-                binding.errorMessageTextView.isVisible = true
+                //binding.errorMessageTextView.isVisible = true
             }
 
             override fun onAnimationEnd(animation: Animation?) {
@@ -157,11 +157,11 @@ class ScannerActivity : AppCompatActivity() {
                 binding.addButton.visibility = state.addButtonVisibility
             }
 
-        binding.foodNametextView.animate()
+        binding.foodNameTextView.animate()
             .alpha(0f)
             .setDuration(500)
             .withEndAction {
-                binding.foodNametextView.isVisible = false
+                binding.foodNameTextView.isVisible = false
                 binding.errorMessageTextView.startAnimation(animation)
             }
 
@@ -169,7 +169,7 @@ class ScannerActivity : AppCompatActivity() {
             .alpha(0f)
             .setDuration(500)
             .withEndAction {
-                binding.imageView.isVisible = false
+                //binding.imageView.isVisible = false
             }
 
         reinitalizeTextView()
@@ -179,7 +179,7 @@ class ScannerActivity : AppCompatActivity() {
 
         Log.i("ANIMATION", "animation success !")
 
-        binding.errorMessageTextView.isVisible = false
+        //binding.errorMessageTextView.isVisible = false
         binding.addButton.visibility = state.addButtonVisibility
         binding.addButton.alpha = 0f
 
@@ -193,10 +193,10 @@ class ScannerActivity : AppCompatActivity() {
         Log.i("ANIMATION", "food detail animation !")
 
         binding.imageView.isVisible = true
-        binding.foodNametextView.isVisible = true
+        binding.foodNameTextView.isVisible = true
 
-        binding.foodNametextView.text = state.foodName
-        binding.foodNametextView.visibility = state.foodNameVisibility
+        binding.foodNameTextView.text = state.foodName
+        binding.foodNameTextView.visibility = state.foodNameVisibility
 
         binding.imageView.visibility = state.imageViewVisibility
 
@@ -211,10 +211,10 @@ class ScannerActivity : AppCompatActivity() {
         }
         Log.i("ANIMATION", "imageURL : $url")
 
-        binding.foodNametextView.alpha = 0f
+        binding.foodNameTextView.alpha = 0f
         binding.imageView.alpha = 0f
 
-        binding.foodNametextView.animate()
+        binding.foodNameTextView.animate()
             .alpha(1f)
             .setDuration(2000)
 
