@@ -6,18 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".ScannerActivity">
 
+    <Button
+        android:id="@+id/simulateButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/round_button"
+        android:padding="1dp"
+        android:paddingLeft="1dp"
+        android:paddingTop="1dp"
+        android:paddingRight="1dp"
+        android:paddingBottom="1dp"
+        android:text="Simuler"
+        android:textSize="8sp"
+        app:iconPadding="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scannerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="30dp"
         app:autoFocusButtonColor="@color/white"
         app:autoFocusButtonVisible="true"
         app:flashButtonColor="@color/white"
         app:flashButtonVisible="true"
-        app:layout_constraintBottom_toTopOf="@+id/errorMessageTextView"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/simulateButton"
         app:maskColor="#4B2F1159">
@@ -28,28 +47,17 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:text="Scannez votre produit"
         app:layout_constraintBottom_toTopOf="@+id/addButton"
         app:layout_constraintEnd_toEndOf="@+id/errorMessageTextView"
         app:layout_constraintStart_toStartOf="@+id/errorMessageTextView" />
 
     <Button
-        android:id="@+id/simulateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="simuler"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:text="ajouter à l'inventaire"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -60,11 +68,22 @@
         android:id="@+id/errorMessageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="15dp"
         android:text="Aucun produit n'a été trouvé !"
         android:textColor="#9F0808"
-        app:layout_constraintBottom_toTopOf="@+id/titleTextView"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/foodNametextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/foodNametextView"
+        app:srcCompat="@drawable/riz_lustucru" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
