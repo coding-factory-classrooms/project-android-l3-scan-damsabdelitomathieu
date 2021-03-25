@@ -1,14 +1,12 @@
 package com.example.foodscanner.inventory
 
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foodscanner.Food
+import com.bumptech.glide.Glide
+import com.example.foodscanner.data.Food
 import com.example.foodscanner.databinding.ItemFoodBinding
-import com.example.foodscanner.foodDetail.FoodDetailActivity
+import com.squareup.picasso.Picasso
 
 class InventoryAdapter(private var foods: List<Food>) :
     RecyclerView.Adapter<InventoryAdapter.ViewHolder>() {
@@ -25,7 +23,8 @@ class InventoryAdapter(private var foods: List<Food>) :
         with(holder.binding) {
             foodDescriptionTextView.text = food.description
             foodScanDateTextView.text = food.latestScanDate
-            foodImageView.setImageResource(food.imageId)
+            Picasso.get().load(food.imageUrl).into(foodImageView)
+            //foodImageView.setImageResource(food.imageUrl)
         }
     }
 

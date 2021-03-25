@@ -1,22 +1,13 @@
 package com.example.foodscanner.inventory
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
-import com.example.foodscanner.Food
+import com.example.foodscanner.data.Food
 import com.example.foodscanner.R
-import com.example.foodscanner.ScannedFood
-import com.example.foodscanner.ScannerViewModel
-import com.example.foodscanner.dataBase.AppDatabase
 import com.example.foodscanner.databinding.ActivityInventoryBinding
-import com.example.foodscanner.databinding.ActivityScannerBinding
-import com.example.foodscanner.databinding.ItemFoodBinding
-import com.example.foodscanner.foodDetail.FoodDetailActivity
 
 class InventoryActivity : AppCompatActivity() {
 
@@ -24,6 +15,46 @@ class InventoryActivity : AppCompatActivity() {
     private val model: InventoryViewModel by viewModels()
     private  lateinit var adapter: InventoryAdapter
 
+    private val foods = listOf(
+        Food(0,"riz lustucrue",
+            "24/03/2021",
+            "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
+            "R.drawable.riz_lustucru"),
+        Food(0,"riz lustucrue",
+            "24/03/2021",
+            "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
+            "R.drawable.riz_lustucru"),
+        Food(0,"riz lustucrue",
+            "24/03/2021",
+            "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
+            "R.drawable.riz_lustucru"),
+        Food(0,"riz lustucrue",
+            "24/03/2021",
+            "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
+            "R.drawable.riz_lustucru"),
+        Food(0,"riz lustucrue",
+            "24/03/2021",
+            "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
+            "R.drawable.riz_lustucru"),
+        Food(0,"riz lustucrue",
+            "24/03/2021",
+            "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
+            "R.drawable.riz_lustucru"),
+        Food(0,"riz lustucrue",
+            "24/03/2021",
+            "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
+            "R.drawable.riz_lustucru"),
+        Food(0,"riz lustucrue",
+            "24/03/2021",
+            "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
+            "R.drawable.riz_lustucru"),
+        Food(0,"riz lustucrue",
+            "24/03/2021",
+            "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
+            "R.drawable.riz_lustucru"),
+    )
+
+    /*
     private val foods = listOf(
         Food("riz lustucrue", "24/03/2021",
             "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
@@ -62,6 +93,7 @@ class InventoryActivity : AppCompatActivity() {
             "Riz long grain 10mn LUSTUCRU : le paquet de 900g",
             R.drawable.riz_lustucru)
     )
+     */
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
