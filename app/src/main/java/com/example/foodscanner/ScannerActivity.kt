@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
@@ -17,6 +17,7 @@ import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 
 import com.example.foodscanner.databinding.ActivityScannerBinding
+import com.example.foodscanner.repository.Repository
 
 const val TAG = "ScannerActivity"
 const val CAMERA_REQUEST_CODE = 101
@@ -24,15 +25,31 @@ const val CAMERA_REQUEST_CODE = 101
 class ScannerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityScannerBinding
-    private val model: ScannerViewModel by viewModels()
+    //private val model: ScannerViewModel by viewModels()
+    private lateinit var model: ScannerViewModel
     private lateinit var codeScanner : CodeScanner
     private lateinit var barCode: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val repository = Repository()
+        val viewModelFactory = ScannerViewModelFactory(repository)
+        model = ViewModelProvider(this, viewModelFactory).get(ScannerViewModel::class.java)
+
+        model.myResponse.observe(this, Observer { response ->
+            if (response.isSuccessful) {
+                Log.i("Response", response.body()?.status.toString())
+                Log.i("Response", response.body()?.code.toString())
+                //Log.i("Response", response.body()?.product.toString())
+                Log.i("Response", response.body()?.status_verbos.toString())
+            } else {
+                Log.i("Response", "${response.toString()} : ${response.code().toString()}")
+
+            }
+        })
 
         model.getState().observe(this, { updateUi(it!!) })
 
@@ -53,7 +70,10 @@ class ScannerActivity : AppCompatActivity() {
     }
 
     private fun simulateBarCode() {
-
+        codeScanner.releaseResources()
+        barCode = "737628064502"
+        binding.textView.text = barCode
+        model.scan(barCode)
     }
 
     private fun updateUi(state: ScannerViewModelState) {
@@ -61,17 +81,17 @@ class ScannerActivity : AppCompatActivity() {
             ScannerViewModelState.Success -> {
                 binding.errorMessageTextView.visibility = View.INVISIBLE
                 binding.addButton.visibility = state.addButtonVisibility
-                Toast.makeText(this, "Scan réussie ! ${state.addButtonVisibility}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Produit trouvé !", Toast.LENGTH_LONG).show()
                 navigateToInventory()
             }
             is ScannerViewModelState.Failure -> {
-                Toast.makeText(this, "Scan raté ! ${state.addButtonVisibility}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Produit non trouvé !", Toast.LENGTH_SHORT).show()
                 binding.addButton.visibility = state.addButtonVisibility
                 binding.errorMessageTextView.visibility = View.VISIBLE
                 binding.errorMessageTextView.text = state.errorMessage
+                reinitalizeTextView()
             }
             is ScannerViewModelState.UpdateScan -> {
-                Toast.makeText(this, "Update Scan ! ${state.addButtonVisibility}", Toast.LENGTH_SHORT).show()
                 binding.addButton.visibility = state.addButtonVisibility
             }
         }
@@ -95,8 +115,8 @@ class ScannerActivity : AppCompatActivity() {
 
             decodeCallback = DecodeCallback {
                 runOnUiThread {
-                    binding.textView.text = it.text
                     barCode = it.text
+                    binding.textView.text = barCode
                     model.scan(barCode)
                     codeScanner.releaseResources()
 
@@ -109,13 +129,13 @@ class ScannerActivity : AppCompatActivity() {
                     Log.i(TAG, "--------> ${it.resultMetadata}")
                     Log.i(TAG, "--------> ${it.resultPoints}")
                     Log.i(TAG, "-----------------------------------------------------------------")
-
                 }
             }
 
             errorCallback = ErrorCallback {
                 runOnUiThread {
                     barCode = ""
+                    reinitalizeTextView()
                     model.scan(barCode)
                     Log.e(TAG, "Erreur de l'initialisation de la caméra : ${it.message}")
                 }
@@ -124,7 +144,12 @@ class ScannerActivity : AppCompatActivity() {
 
         binding.scannerView.setOnClickListener{
             codeScanner.startPreview()
+            reinitalizeTextView()
         }
+    }
+
+    private fun reinitalizeTextView() {
+        binding.textView.text = "Scannez votre produit"
     }
 
     override fun onResume() {

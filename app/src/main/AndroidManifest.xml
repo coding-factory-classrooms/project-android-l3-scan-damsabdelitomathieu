@@ -15,15 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodScanner"
         tools:ignore="HardcodedDebugMode">
-        <activity android:name=".ScannerActivity"></activity>
-        <activity android:name=".foodDetail.FoodDetailActivity" />
-        <activity android:name=".inventory.InventoryActivity" >
+        <activity android:name=".ScannerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".foodDetail.FoodDetailActivity" />
+        <activity android:name=".inventory.InventoryActivity" />
     </application>
 
 </manifest>
