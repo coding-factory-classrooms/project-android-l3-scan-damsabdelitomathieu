@@ -11,10 +11,8 @@ import androidx.room.Query
 interface FoodDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addFood(food: Food) {
-        Log.i("DATABASE", "addFood() in FoodDao -> food = $food")
-    }
+    fun addFood(food: Food)
 
     @Query("SELECT * FROM foods_table ORDER BY id ASC")
-    fun readAllData(): LiveData<List<Food>>
+    fun readAllData(): List<Food>
 }

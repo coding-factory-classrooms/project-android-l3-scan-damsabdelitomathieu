@@ -14,17 +14,3 @@ class Repository {
         return RetrofitInstance.api.getFood(barCode)
     }
 }
-
-class FoodRepository(private val foodDao: FoodDao) {
-
-    val readAllData: LiveData<List<Food>> = foodDao.readAllData()
-
-    suspend fun addFood(food: Food) {
-        Log.i("DATABASE", "addFood() in Repository -> food = $food")
-        foodDao.addFood(food)
-    }
-
-    fun getData() : LiveData<List<Food>> {
-        return foodDao.readAllData()
-    }
-}

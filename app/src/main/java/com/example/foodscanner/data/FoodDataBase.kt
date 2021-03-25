@@ -27,7 +27,7 @@ abstract class FoodDataBase: RoomDatabase() {
                     context.applicationContext,
                     FoodDataBase::class.java,
                     "food_database"
-                ).build()
+                ).allowMainThreadQueries().build()
 
                 INSTANCE = instance
                 return instance
