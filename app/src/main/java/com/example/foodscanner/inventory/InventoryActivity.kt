@@ -94,7 +94,10 @@ class InventoryActivity : AppCompatActivity() {
             R.drawable.riz_lustucru)
     )
      */
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
