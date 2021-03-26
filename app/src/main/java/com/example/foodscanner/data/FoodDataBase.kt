@@ -22,12 +22,19 @@ abstract class FoodDataBase: RoomDatabase() {
             }
 
             synchronized(this) {
+<<<<<<< HEAD
                 Log.i("DATABASE", "initialisation de FoodDataBase")
+=======
+>>>>>>> test
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     FoodDataBase::class.java,
                     "food_database"
+<<<<<<< HEAD
                 ).build()
+=======
+                ).allowMainThreadQueries().build()
+>>>>>>> test
 
                 INSTANCE = instance
                 return instance

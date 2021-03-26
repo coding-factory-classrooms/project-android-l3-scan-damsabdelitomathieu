@@ -1,16 +1,27 @@
 package com.example.foodscanner
 
+import android.os.Build
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.foodscanner.api.model.FoodRequest
 import com.example.foodscanner.data.Food
+<<<<<<< HEAD
 import com.example.foodscanner.data.FoodDataBase
 import com.example.foodscanner.repository.FoodRepository
+=======
+import com.example.foodscanner.data.FoodDao
+>>>>>>> test
 import com.example.foodscanner.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 sealed class ScannerViewModelState(
     open val errorMessage: String = "",
@@ -46,23 +57,31 @@ sealed class ScannerViewModelState(
 
 class ScannerViewModel(private val repository: Repository) : ViewModel() {
 
+<<<<<<< HEAD
     private lateinit var foodRepository: FoodRepository
 
+=======
+    lateinit var foodDao: FoodDao
+>>>>>>> test
     private val state = MutableLiveData<ScannerViewModelState>()
     fun getState(): LiveData<ScannerViewModelState> = state
 
     val myResponse: MutableLiveData<Response<FoodRequest>> = MutableLiveData()
 
+<<<<<<< HEAD
     fun initialiseFoodDao(application: ScannerActivity) {
         val foodDao = FoodDataBase.getDataBase(application).foodDao()
         foodRepository = FoodRepository(foodDao)
     }
 
+=======
+>>>>>>> test
     fun addFood() {
         viewModelScope.launch(Dispatchers.IO) {
             val food: Food = Food(
                 0,
                 myResponse.value!!.body()!!.getFoodName(),
+<<<<<<< HEAD
                 "25.03.2021",
                 myResponse.value!!.body()!!.getFoodName() + " -> description",
                 myResponse.value!!.body()!!.getImageUrl()
@@ -84,6 +103,25 @@ class ScannerViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+=======
+                getDate(),
+                myResponse.value!!.body()!!.getDesciption(),
+                myResponse.value!!.body()!!.getImageUrl(),
+            )
+            Log.i("DATABASE", "addFood() in ScannerViewModel -> food = $food")
+            foodDao.addFood(food)
+
+            val listFood = foodDao.readAllData()
+            Log.i("DATABASE", "DATABASE : $listFood")
+        }
+    }
+
+    private fun getDate(): String {
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        return sdf.format(Date()).toString()
+    }
+
+>>>>>>> test
     fun scan(code: String) {
         viewModelScope.launch {
             if (getFood(code)) {

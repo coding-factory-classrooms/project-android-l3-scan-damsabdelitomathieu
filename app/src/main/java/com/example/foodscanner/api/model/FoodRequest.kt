@@ -36,6 +36,15 @@ data class FoodRequest(
         return ""
     }
 
+    fun getDesciption(): String {
+        if (this.product != null) {
+            if (this.product.asJsonObject.get("ingredients_text_with_allergens_fr") != null)
+                return this.product.asJsonObject.get("ingredients_text_with_allergens_fr").toString()
+        }
+
+        return ""
+    }
+
     fun getImageUrl(): String {
         if (this.product != null) {
             if (this.product.asJsonObject.get("image_front_url") != null)
