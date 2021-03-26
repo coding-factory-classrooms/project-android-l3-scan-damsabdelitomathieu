@@ -1,7 +1,9 @@
 package com.example.foodscanner
 
+import android.os.Build
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.foodscanner.api.model.FoodRequest
 import com.example.foodscanner.data.Food
@@ -10,6 +12,11 @@ import com.example.foodscanner.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 sealed class ScannerViewModelState(
     open val errorMessage: String = "",
@@ -46,7 +53,6 @@ sealed class ScannerViewModelState(
 class ScannerViewModel(private val repository: Repository) : ViewModel() {
 
     lateinit var foodDao: FoodDao
-
     private val state = MutableLiveData<ScannerViewModelState>()
     fun getState(): LiveData<ScannerViewModelState> = state
 
@@ -57,21 +63,21 @@ class ScannerViewModel(private val repository: Repository) : ViewModel() {
             val food: Food = Food(
                 0,
                 myResponse.value!!.body()!!.getFoodName(),
-                "25.03.2021",
+                getDate(),
                 myResponse.value!!.body()!!.getFoodName() + " -> description",
-                myResponse.value!!.body()!!.getImageUrl()
+                myResponse.value!!.body()!!.getImageUrl(),
             )
             Log.i("DATABASE", "addFood() in ScannerViewModel -> food = $food")
             foodDao.addFood(food)
 
             val listFood = foodDao.readAllData()
-
-            val iterator = listFood.iterator()
-
-            if (iterator.hasNext()) {
-                Log.i("DATABASE", "titre : " + iterator.next().title)
-            }
+            Log.i("DATABASE", "DATABASE : $listFood")
         }
+    }
+
+    private fun getDate(): String {
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        return sdf.format(Date()).toString()
     }
 
     fun scan(code: String) {

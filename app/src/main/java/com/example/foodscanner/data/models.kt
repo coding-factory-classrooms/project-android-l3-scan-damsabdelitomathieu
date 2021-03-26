@@ -2,6 +2,7 @@ package com.example.foodscanner.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.sql.Timestamp
 
 @Entity(tableName = "foods_table")
 data class Food(
@@ -10,5 +11,5 @@ data class Food(
     val title: String,
     val latestScanDate: String,
     val description: String,
-    val imageUrl: String
+    val imageUrl: String,
 )

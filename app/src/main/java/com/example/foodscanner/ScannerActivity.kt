@@ -1,5 +1,6 @@
 package com.example.foodscanner
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +13,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.budiyev.android.codescanner.*
 import com.bumptech.glide.Glide
 import com.example.foodscanner.data.FoodDataBase
 import com.example.foodscanner.databinding.ActivityScannerBinding
+import com.example.foodscanner.inventory.InventoryActivity
 import com.example.foodscanner.repository.Repository
 
 const val TAG = "ScannerActivity"
@@ -87,7 +91,7 @@ class ScannerActivity : AppCompatActivity() {
 
     private fun insertIntoDatabase() {
         model.addFood()
-        Toast.makeText(this, "Produit ajouté !",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Produit ajouté !", Toast.LENGTH_SHORT).show()
         navigateToInventory()
     }
 
@@ -196,7 +200,7 @@ class ScannerActivity : AppCompatActivity() {
         if (url.isNotBlank()) {
             //Picasso.get().load(url).into(binding.imageView)
             Glide.with(this)
-                .load("http://static.openfoodfacts.org/images/products/302/176/040/0012/front_fr.70.400.jpg")
+                .load("http://www.clicmarket.fr/4246-thickbox_default/24-canettes-de-coca-cola-24-x-33-cl.jpg")
                 .into(binding.imageView)
         }
         Log.i("ANIMATION", "imageURL : $url")
@@ -215,6 +219,35 @@ class ScannerActivity : AppCompatActivity() {
 
     private fun navigateToInventory() {
         Log.i(TAG, ">>>>>>> navigate to list")
+        val intent = Intent(this, InventoryActivity::class.java)
+
+        // animation
+        val duration: Long = 500
+
+        binding.foodNameTextView.animate()
+            .alpha(0f)
+            .setDuration(duration)
+            .withEndAction {
+                binding.foodNameTextView.isVisible = false
+            }
+
+        binding.imageView.animate()
+            .alpha(0f)
+            .setDuration(duration)
+            .withEndAction {
+                binding.imageView.isVisible = false
+            }
+
+
+        binding.addButton.animate()
+            .alpha(0f)
+            .setDuration(duration)
+            .withEndAction {
+                binding.addButton.visibility = View.INVISIBLE
+            }
+
+        startActivity(intent)
+        reinitalizeTextView()
     }
 
     private fun codeScanner() {
@@ -254,7 +287,17 @@ class ScannerActivity : AppCompatActivity() {
     }
 
     private fun reinitalizeTextView() {
-        binding.textView.text = "Scannez votre produit"
+        if (binding.textView.text != "Scannez votre produit") {
+            binding.textView.animate()
+                .alpha(0f)
+                .setDuration(1000)
+                .withEndAction {
+                    binding.textView.text = "Scannez votre produit"
+                    binding.textView.animate()
+                        .alpha(1f)
+                        .setDuration(1000)
+                }
+        }
     }
 
     override fun onResume() {

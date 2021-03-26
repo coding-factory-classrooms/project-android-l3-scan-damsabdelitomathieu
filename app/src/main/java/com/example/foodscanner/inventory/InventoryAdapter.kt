@@ -23,8 +23,9 @@ class InventoryAdapter(private var foods: List<Food>) :
         with(holder.binding) {
             foodDescriptionTextView.text = food.description
             foodScanDateTextView.text = food.latestScanDate
-            Picasso.get().load(food.imageUrl).into(foodImageView)
-            //foodImageView.setImageResource(food.imageUrl)
+            foodTitleTextView.text = food.title
+            Picasso.get().load("http://www.clicmarket.fr/4246-thickbox_default/24-canettes-de-coca-cola-24-x-33-cl.jpg").into(foodImageView)
+            //Picasso.get().load(food.imageUrl).into(foodImageView)
         }
     }
 

@@ -22,7 +22,6 @@ abstract class FoodDataBase: RoomDatabase() {
             }
 
             synchronized(this) {
-                Log.i("DATABASE", "initialisation de FoodDataBase")
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     FoodDataBase::class.java,
