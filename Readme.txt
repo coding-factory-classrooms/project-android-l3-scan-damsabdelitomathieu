@@ -1,0 +1,1 @@
+Le diagramme est à racine du projet
