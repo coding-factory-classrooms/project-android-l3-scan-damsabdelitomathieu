@@ -1,9 +1,11 @@
 package com.example.foodscanner.inventory
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.foodscanner.ScannerActivity
 import com.example.foodscanner.data.Food
 import com.example.foodscanner.data.FoodDataBase
 import com.example.foodscanner.databinding.ActivityInventoryBinding
@@ -31,9 +33,20 @@ class InventoryActivity : AppCompatActivity() {
         model.getFoodsLiveData().observe(this, { foods -> updateFoods(foods!!) })
         model.loadFoods()
 
-        binding.removeButton.setOnClickListener() {
+        binding.removeFloatingButton.setOnClickListener() {
             removeAllFoods()
         }
+
+        binding.addFloatingButton.setOnClickListener() {
+            addNewFood()
+        }
+    }
+
+    private fun addNewFood() {
+        val intent = Intent(this, ScannerActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        finish()
     }
 
     private fun removeAllFoods() {

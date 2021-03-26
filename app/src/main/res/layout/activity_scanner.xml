@@ -47,9 +47,12 @@
         android:id="@+id/errorMessageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
         android:text="Aucun produit n'a été trouvé !"
-        android:textColor="#9F0808"
+        android:textColor="#B39F0808"
+        android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/foodNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -66,6 +69,20 @@
         app:srcCompat="@drawable/riz_lustucru" />
 
     <TextView
+        android:id="@+id/foodNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="foodName"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/errorMessageTextView"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/errorMessageTextView" />
+
+    <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,29 +92,19 @@
         app:layout_constraintEnd_toEndOf="@+id/errorMessageTextView"
         app:layout_constraintStart_toStartOf="@+id/errorMessageTextView" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="ajouter à l'inventaire"
-        android:textSize="10sp"
+        android:clickable="true"
+        app:backgroundTint="#4D00E9"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/foodNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="16dp"
-        android:text="foodName"
-        android:textAlignment="textStart"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView" />
+        app:srcCompat="@drawable/ic_baseline_playlist_add_24"
+        app:tint="@android:color/white"
+        tools:ignore="VectorDrawableCompat" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

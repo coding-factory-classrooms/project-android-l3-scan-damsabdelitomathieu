@@ -10,6 +10,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -19,16 +20,35 @@
         tools:listitem="@layout/item_food" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/removeButton"
+        android:id="@+id/removeFloatingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:clickable="true"
+        app:backgroundTint="#808C0202"
+        app:layout_constraintBottom_toBottomOf="@+id/addFloatingButton"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/addFloatingButton"
+        app:layout_constraintTop_toTopOf="@+id/addFloatingButton"
+        app:srcCompat="@drawable/ic_baseline_restore_from_trash_24"
+        app:tint="@android:color/white"
+        tools:ignore="VectorDrawableCompat" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addFloatingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:clickable="true"
-        app:backgroundTint="#778C0202"
+        app:backgroundTint="#804530C1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_restore_from_trash_24"
+        app:layout_constraintEnd_toStartOf="@+id/removeFloatingButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/recyclerView"
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        app:tint="@android:color/white"
         tools:ignore="VectorDrawableCompat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
