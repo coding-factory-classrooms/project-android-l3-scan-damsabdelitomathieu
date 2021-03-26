@@ -64,7 +64,7 @@ class ScannerViewModel(private val repository: Repository) : ViewModel() {
                 0,
                 myResponse.value!!.body()!!.getFoodName(),
                 getDate(),
-                myResponse.value!!.body()!!.getFoodName() + " -> description",
+                myResponse.value!!.body()!!.getDesciption(),
                 myResponse.value!!.body()!!.getImageUrl(),
             )
             Log.i("DATABASE", "addFood() in ScannerViewModel -> food = $food")

@@ -28,33 +28,19 @@
         android:text="Titre"
         android:textAlignment="center"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/itemButton"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/foodScanDateTextView"
         app:layout_constraintStart_toEndOf="@+id/foodImageView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/foodScanDateTextView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="5dp"
         android:text="TextView"
         android:textAlignment="center"
         android:textSize="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/itemButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/foodTitleTextView"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/itemButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Detail"
-        android:textSize="8sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/foodDescriptionTextView"
