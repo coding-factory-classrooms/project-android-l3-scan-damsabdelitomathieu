@@ -12,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 
+
 object RetrofitInstance {
 
     private val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
